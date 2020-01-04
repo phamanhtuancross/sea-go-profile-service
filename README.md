@@ -1,1 +1,0 @@
-# sea-go-profile-service

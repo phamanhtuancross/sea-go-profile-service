@@ -1,0 +1,83 @@
+syntax = "proto3";
+package v1;
+
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-swagger/options/annotations.proto";
+
+option (grpc.gateway.protoc_gen_swagger.options.openapiv2_swagger) = {
+	info: {
+		title: "ToDo service";
+        version: "1.0";
+        contact: {
+            name: "go-grpc-http-rest-microservice-tutorial project";
+            url: "https://github.com/amsokol/go-grpc-http-rest-microservice-tutorial";
+            email: "medium@amsokol.com";
+        };
+    };
+    schemes: HTTP;
+    consumes: "application/json";
+    produces: "application/json";
+    responses: {
+        key: "404";
+        value: {
+            description: "Returned when the resource does not exist.";
+            schema: {
+                json_schema: {
+                    type: STRING;
+                }
+            }
+        }
+    }
+};
+
+
+message Account{
+    string id = 1;
+    string email = 2;
+    string first_name = 3;
+    string last_name = 4;
+    string phone_number = 5;
+    string user_name = 6;
+    string password = 7;
+    string avatar_url = 8;
+
+    google.protobuf.Timestamp dob = 9;
+    google.protobuf.Timestamp created_time = 10;
+    google.protobuf.Timestamp updated_time = 11;
+}
+
+message HomeRequest {
+    string api = 1;
+}
+
+message HomeResponse {
+    string message = 1;
+}
+
+message CreateRequest {
+    string api = 1;
+    Account account_info = 2;
+}
+
+message CreateResponse {
+    string api = 1;
+    int64 id = 2;
+}
+
+
+service ProfileService {
+
+    rpc Home(HomeRequest) returns(HomeResponse) {
+        option(google.api.http) = {
+            get: "/v1"
+        };
+    }
+
+    rpc Create(CreateRequest) returns (CreateResponse) {
+        option(google.api.http) = {
+            post: "/v1/create"
+            body: "*"
+        };
+    }
+}
