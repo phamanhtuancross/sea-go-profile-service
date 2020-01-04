@@ -62,7 +62,18 @@ func (s *ProfileServiceServer) Create(ctx context.Context, req *v1Proto.CreateRe
 
 	defer conn.Close()
 
-	res, err := conn.ExecContext(ctx,INSERT_NEW_ACCOUNT, timeUtil.GenerateIdString(),req.AccountInfo.Email,req.AccountInfo.FirstName,req.AccountInfo.LastName,req.AccountInfo.PhoneNumber,req.AccountInfo.UserName,req.AccountInfo.Password, req.AccountInfo.AvatarUrl,req.AccountInfo.Dob,req.AccountInfo.CreatedTime, req.AccountInfo.UpdatedTime)
+	res, err := conn.ExecContext(ctx,INSERT_NEW_ACCOUNT,
+		timeUtil.GenerateIdString(),
+		req.AccountInfo.Email,
+		req.AccountInfo.FirstName,
+		req.AccountInfo.LastName,
+		req.AccountInfo.PhoneNumber,
+		req.AccountInfo.UserName,
+		req.AccountInfo.Password,
+		req.AccountInfo.AvatarUrl,
+		req.AccountInfo.Dob,
+		req.AccountInfo.CreatedTime,
+		req.AccountInfo.UpdatedTime)
 	if err != nil {
 		return nil, status.Errorf(codes.Unknown, "Failed to insert data to account table" + err.Error())
 	}
@@ -78,3 +89,5 @@ func (s *ProfileServiceServer) Create(ctx context.Context, req *v1Proto.CreateRe
 		Id:  id,
 	},nil
 }
+
+
