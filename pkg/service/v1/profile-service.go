@@ -49,7 +49,7 @@ func (s *ProfileServiceServer) Home(context.Context, *v1Proto.HomeRequest) (*v1P
 
 
 const INSERT_NEW_ACCOUNT = "INSERT INTO Account(`id`,`email`, `first_name`, `last_name`,`phone_number`,`user_name`,`password`,`avatar_url`,`dob`,`created_time`,`updated_time`) VALUES(?, ?, ?,?,?,?,?,?,?,?,?)"
-func (s *ProfileServiceServer) Create(ctx context.Context, req *v1Proto.CreateRequest) (*v1Proto.CreateResponse, error) {
+func (s *ProfileServiceServer) Register(ctx context.Context, req *v1Proto.RegisterRequest) (*v1Proto.RegisterResponse, error) {
 	if err := s.checkAPIVersion(req.Api); err != nil {
 		return nil, err
 	}
@@ -62,8 +62,10 @@ func (s *ProfileServiceServer) Create(ctx context.Context, req *v1Proto.CreateRe
 
 	defer conn.Close()
 
-	res, err := conn.ExecContext(ctx,INSERT_NEW_ACCOUNT,
-		timeUtil.GenerateIdString(),
+	var id = timeUtil.GenerateIdString()
+
+	_, err = conn.ExecContext(ctx, INSERT_NEW_ACCOUNT,
+		id,
 		req.AccountInfo.Email,
 		req.AccountInfo.FirstName,
 		req.AccountInfo.LastName,
@@ -78,15 +80,13 @@ func (s *ProfileServiceServer) Create(ctx context.Context, req *v1Proto.CreateRe
 		return nil, status.Errorf(codes.Unknown, "Failed to insert data to account table" + err.Error())
 	}
 
-	id, err := res.LastInsertId()
+	var accountInfo = req.AccountInfo
+	accountInfo.Id = id
 
-	if err != nil {
-		return nil, status.Error(codes.Unknown, "Failed to get id from insert object")
-	}
-
-	return &v1Proto.CreateResponse{
-		Api: ApiVersion,
-		Id:  id,
+	return &v1Proto.RegisterResponse{
+		Api:         ApiVersion,
+		Token:       id,
+		AccountInfo: accountInfo,
 	},nil
 }
 

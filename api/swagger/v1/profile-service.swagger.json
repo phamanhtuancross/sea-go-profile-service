@@ -50,14 +50,14 @@
         ]
       }
     },
-    "/v1/create": {
+    "/v1/register": {
       "post": {
-        "operationId": "Create",
+        "operationId": "Register",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/v1CreateResponse"
+              "$ref": "#/definitions/v1RegisterResponse"
             }
           },
           "404": {
@@ -74,7 +74,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/v1CreateRequest"
+              "$ref": "#/definitions/v1RegisterRequest"
             }
           }
         ],
@@ -126,7 +126,15 @@
         }
       }
     },
-    "v1CreateRequest": {
+    "v1HomeResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "v1RegisterRequest": {
       "type": "object",
       "properties": {
         "api": {
@@ -137,23 +145,17 @@
         }
       }
     },
-    "v1CreateResponse": {
+    "v1RegisterResponse": {
       "type": "object",
       "properties": {
         "api": {
           "type": "string"
         },
-        "id": {
-          "type": "string",
-          "format": "int64"
-        }
-      }
-    },
-    "v1HomeResponse": {
-      "type": "object",
-      "properties": {
-        "message": {
+        "token": {
           "type": "string"
+        },
+        "account_info": {
+          "$ref": "#/definitions/v1Account"
         }
       }
     }

@@ -55,14 +55,16 @@ message HomeResponse {
     string message = 1;
 }
 
-message CreateRequest {
+message RegisterRequest {
     string api = 1;
     Account account_info = 2;
 }
 
-message CreateResponse {
+message RegisterResponse {
     string api = 1;
-    int64 id = 2;
+    string token = 2;
+    Account account_info = 3;
+
 }
 
 
@@ -74,9 +76,9 @@ service ProfileService {
         };
     }
 
-    rpc Create(CreateRequest) returns (CreateResponse) {
+    rpc Register(RegisterRequest) returns (RegisterResponse) {
         option(google.api.http) = {
-            post: "/v1/create"
+            post: "/v1/register"
             body: "*"
         };
     }
