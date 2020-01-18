@@ -10,9 +10,8 @@ option (grpc.gateway.protoc_gen_swagger.options.openapiv2_swagger) = {
 		title: "ToDo service";
         version: "1.0";
         contact: {
-            name: "go-grpc-http-rest-microservice-tutorial project";
-            url: "https://github.com/amsokol/go-grpc-http-rest-microservice-tutorial";
-            email: "medium@amsokol.com";
+            name: "profile service for VINID";
+            email: "phamanhtuancross@gmail.com";
         };
     };
     schemes: HTTP;
@@ -41,12 +40,20 @@ message Account{
     string user_name = 6;
     string password = 7;
     string avatar_url = 8;
+    string more_info = 9;
 
-    google.protobuf.Timestamp dob = 9;
-    google.protobuf.Timestamp created_time = 10;
-    google.protobuf.Timestamp updated_time = 11;
+    google.protobuf.Timestamp dob = 10;
+    google.protobuf.Timestamp created_time = 11;
+    google.protobuf.Timestamp updated_time = 12;
 }
 
+message Request {
+
+}
+
+message Response {
+
+}
 message HomeRequest {
     string api = 1;
 }
@@ -67,6 +74,43 @@ message RegisterResponse {
 
 }
 
+message GetAllRequest{
+    string api = 1;
+}
+
+message GetAllResponse {
+    string api = 1;
+    Account account_info = 2;
+}
+
+/// integration chat service inside profile service
+message Point {
+    int32 latitude = 1;
+    int32 longitude = 2;
+}
+
+message Rectangle {
+    Point lo = 1;
+    Point hi = 2;
+}
+
+message Feature {
+    string name = 1;
+    Point location = 2;
+}
+
+message RouteNote {
+    Point location = 1;
+    string message = 2;
+}
+
+message RouteSummary {
+    int32 point_count = 1;
+    int32 feature_count = 2;
+    int32 distance = 3;
+    int32 elapsed_time = 4;
+}
+
 
 service ProfileService {
 
@@ -82,4 +126,25 @@ service ProfileService {
             body: "*"
         };
     }
+
+//    rpc getAll (GetAllRequest) returns (stream GetAllResponse) {
+//        option(google.api.http) = {
+//            post: "/v1/all"
+//            body: "*"
+//        };
+//    }
+//
+
+    // Immediately returns feature of a request
+    rpc GetFeature(Point) returns (Feature) {}
+
+    // Splits a stream of rectangles and returns each feature in a stream of rectangles
+    rpc ListFeatures(Rectangle) returns (stream Feature) {}
+
+    //
+    rpc RecordRoute(stream Point) returns (RouteSummary) {}
+
+    rpc RouteChat(stream RouteNote) returns (stream RouteNote) {}
+
+
 }

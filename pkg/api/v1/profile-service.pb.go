@@ -36,9 +36,10 @@ type Account struct {
 	UserName             string               `protobuf:"bytes,6,opt,name=user_name,json=userName,proto3" json:"user_name,omitempty"`
 	Password             string               `protobuf:"bytes,7,opt,name=password,proto3" json:"password,omitempty"`
 	AvatarUrl            string               `protobuf:"bytes,8,opt,name=avatar_url,json=avatarUrl,proto3" json:"avatar_url,omitempty"`
-	Dob                  *timestamp.Timestamp `protobuf:"bytes,9,opt,name=dob,proto3" json:"dob,omitempty"`
-	CreatedTime          *timestamp.Timestamp `protobuf:"bytes,10,opt,name=created_time,json=createdTime,proto3" json:"created_time,omitempty"`
-	UpdatedTime          *timestamp.Timestamp `protobuf:"bytes,11,opt,name=updated_time,json=updatedTime,proto3" json:"updated_time,omitempty"`
+	MoreInfo             string               `protobuf:"bytes,9,opt,name=more_info,json=moreInfo,proto3" json:"more_info,omitempty"`
+	Dob                  *timestamp.Timestamp `protobuf:"bytes,10,opt,name=dob,proto3" json:"dob,omitempty"`
+	CreatedTime          *timestamp.Timestamp `protobuf:"bytes,11,opt,name=created_time,json=createdTime,proto3" json:"created_time,omitempty"`
+	UpdatedTime          *timestamp.Timestamp `protobuf:"bytes,12,opt,name=updated_time,json=updatedTime,proto3" json:"updated_time,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}             `json:"-"`
 	XXX_unrecognized     []byte               `json:"-"`
 	XXX_sizecache        int32                `json:"-"`
@@ -125,6 +126,13 @@ func (m *Account) GetAvatarUrl() string {
 	return ""
 }
 
+func (m *Account) GetMoreInfo() string {
+	if m != nil {
+		return m.MoreInfo
+	}
+	return ""
+}
+
 func (m *Account) GetDob() *timestamp.Timestamp {
 	if m != nil {
 		return m.Dob
@@ -146,6 +154,68 @@ func (m *Account) GetUpdatedTime() *timestamp.Timestamp {
 	return nil
 }
 
+type Request struct {
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Request) Reset()         { *m = Request{} }
+func (m *Request) String() string { return proto.CompactTextString(m) }
+func (*Request) ProtoMessage()    {}
+func (*Request) Descriptor() ([]byte, []int) {
+	return fileDescriptor_916a1dca15719595, []int{1}
+}
+
+func (m *Request) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Request.Unmarshal(m, b)
+}
+func (m *Request) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Request.Marshal(b, m, deterministic)
+}
+func (m *Request) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Request.Merge(m, src)
+}
+func (m *Request) XXX_Size() int {
+	return xxx_messageInfo_Request.Size(m)
+}
+func (m *Request) XXX_DiscardUnknown() {
+	xxx_messageInfo_Request.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Request proto.InternalMessageInfo
+
+type Response struct {
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Response) Reset()         { *m = Response{} }
+func (m *Response) String() string { return proto.CompactTextString(m) }
+func (*Response) ProtoMessage()    {}
+func (*Response) Descriptor() ([]byte, []int) {
+	return fileDescriptor_916a1dca15719595, []int{2}
+}
+
+func (m *Response) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Response.Unmarshal(m, b)
+}
+func (m *Response) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Response.Marshal(b, m, deterministic)
+}
+func (m *Response) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Response.Merge(m, src)
+}
+func (m *Response) XXX_Size() int {
+	return xxx_messageInfo_Response.Size(m)
+}
+func (m *Response) XXX_DiscardUnknown() {
+	xxx_messageInfo_Response.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Response proto.InternalMessageInfo
+
 type HomeRequest struct {
 	Api                  string   `protobuf:"bytes,1,opt,name=api,proto3" json:"api,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -157,7 +227,7 @@ func (m *HomeRequest) Reset()         { *m = HomeRequest{} }
 func (m *HomeRequest) String() string { return proto.CompactTextString(m) }
 func (*HomeRequest) ProtoMessage()    {}
 func (*HomeRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_916a1dca15719595, []int{1}
+	return fileDescriptor_916a1dca15719595, []int{3}
 }
 
 func (m *HomeRequest) XXX_Unmarshal(b []byte) error {
@@ -196,7 +266,7 @@ func (m *HomeResponse) Reset()         { *m = HomeResponse{} }
 func (m *HomeResponse) String() string { return proto.CompactTextString(m) }
 func (*HomeResponse) ProtoMessage()    {}
 func (*HomeResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_916a1dca15719595, []int{2}
+	return fileDescriptor_916a1dca15719595, []int{4}
 }
 
 func (m *HomeResponse) XXX_Unmarshal(b []byte) error {
@@ -236,7 +306,7 @@ func (m *RegisterRequest) Reset()         { *m = RegisterRequest{} }
 func (m *RegisterRequest) String() string { return proto.CompactTextString(m) }
 func (*RegisterRequest) ProtoMessage()    {}
 func (*RegisterRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_916a1dca15719595, []int{3}
+	return fileDescriptor_916a1dca15719595, []int{5}
 }
 
 func (m *RegisterRequest) XXX_Unmarshal(b []byte) error {
@@ -284,7 +354,7 @@ func (m *RegisterResponse) Reset()         { *m = RegisterResponse{} }
 func (m *RegisterResponse) String() string { return proto.CompactTextString(m) }
 func (*RegisterResponse) ProtoMessage()    {}
 func (*RegisterResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_916a1dca15719595, []int{4}
+	return fileDescriptor_916a1dca15719595, []int{6}
 }
 
 func (m *RegisterResponse) XXX_Unmarshal(b []byte) error {
@@ -326,60 +396,424 @@ func (m *RegisterResponse) GetAccountInfo() *Account {
 	return nil
 }
 
+type GetAllRequest struct {
+	Api                  string   `protobuf:"bytes,1,opt,name=api,proto3" json:"api,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetAllRequest) Reset()         { *m = GetAllRequest{} }
+func (m *GetAllRequest) String() string { return proto.CompactTextString(m) }
+func (*GetAllRequest) ProtoMessage()    {}
+func (*GetAllRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_916a1dca15719595, []int{7}
+}
+
+func (m *GetAllRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetAllRequest.Unmarshal(m, b)
+}
+func (m *GetAllRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetAllRequest.Marshal(b, m, deterministic)
+}
+func (m *GetAllRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetAllRequest.Merge(m, src)
+}
+func (m *GetAllRequest) XXX_Size() int {
+	return xxx_messageInfo_GetAllRequest.Size(m)
+}
+func (m *GetAllRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetAllRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetAllRequest proto.InternalMessageInfo
+
+func (m *GetAllRequest) GetApi() string {
+	if m != nil {
+		return m.Api
+	}
+	return ""
+}
+
+type GetAllResponse struct {
+	Api                  string   `protobuf:"bytes,1,opt,name=api,proto3" json:"api,omitempty"`
+	AccountInfo          *Account `protobuf:"bytes,2,opt,name=account_info,json=accountInfo,proto3" json:"account_info,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetAllResponse) Reset()         { *m = GetAllResponse{} }
+func (m *GetAllResponse) String() string { return proto.CompactTextString(m) }
+func (*GetAllResponse) ProtoMessage()    {}
+func (*GetAllResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_916a1dca15719595, []int{8}
+}
+
+func (m *GetAllResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetAllResponse.Unmarshal(m, b)
+}
+func (m *GetAllResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetAllResponse.Marshal(b, m, deterministic)
+}
+func (m *GetAllResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetAllResponse.Merge(m, src)
+}
+func (m *GetAllResponse) XXX_Size() int {
+	return xxx_messageInfo_GetAllResponse.Size(m)
+}
+func (m *GetAllResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetAllResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetAllResponse proto.InternalMessageInfo
+
+func (m *GetAllResponse) GetApi() string {
+	if m != nil {
+		return m.Api
+	}
+	return ""
+}
+
+func (m *GetAllResponse) GetAccountInfo() *Account {
+	if m != nil {
+		return m.AccountInfo
+	}
+	return nil
+}
+
+/// integration chat service inside profile service
+type Point struct {
+	Latitude             int32    `protobuf:"varint,1,opt,name=latitude,proto3" json:"latitude,omitempty"`
+	Longitude            int32    `protobuf:"varint,2,opt,name=longitude,proto3" json:"longitude,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Point) Reset()         { *m = Point{} }
+func (m *Point) String() string { return proto.CompactTextString(m) }
+func (*Point) ProtoMessage()    {}
+func (*Point) Descriptor() ([]byte, []int) {
+	return fileDescriptor_916a1dca15719595, []int{9}
+}
+
+func (m *Point) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Point.Unmarshal(m, b)
+}
+func (m *Point) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Point.Marshal(b, m, deterministic)
+}
+func (m *Point) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Point.Merge(m, src)
+}
+func (m *Point) XXX_Size() int {
+	return xxx_messageInfo_Point.Size(m)
+}
+func (m *Point) XXX_DiscardUnknown() {
+	xxx_messageInfo_Point.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Point proto.InternalMessageInfo
+
+func (m *Point) GetLatitude() int32 {
+	if m != nil {
+		return m.Latitude
+	}
+	return 0
+}
+
+func (m *Point) GetLongitude() int32 {
+	if m != nil {
+		return m.Longitude
+	}
+	return 0
+}
+
+type Rectangle struct {
+	Lo                   *Point   `protobuf:"bytes,1,opt,name=lo,proto3" json:"lo,omitempty"`
+	Hi                   *Point   `protobuf:"bytes,2,opt,name=hi,proto3" json:"hi,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Rectangle) Reset()         { *m = Rectangle{} }
+func (m *Rectangle) String() string { return proto.CompactTextString(m) }
+func (*Rectangle) ProtoMessage()    {}
+func (*Rectangle) Descriptor() ([]byte, []int) {
+	return fileDescriptor_916a1dca15719595, []int{10}
+}
+
+func (m *Rectangle) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Rectangle.Unmarshal(m, b)
+}
+func (m *Rectangle) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Rectangle.Marshal(b, m, deterministic)
+}
+func (m *Rectangle) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Rectangle.Merge(m, src)
+}
+func (m *Rectangle) XXX_Size() int {
+	return xxx_messageInfo_Rectangle.Size(m)
+}
+func (m *Rectangle) XXX_DiscardUnknown() {
+	xxx_messageInfo_Rectangle.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Rectangle proto.InternalMessageInfo
+
+func (m *Rectangle) GetLo() *Point {
+	if m != nil {
+		return m.Lo
+	}
+	return nil
+}
+
+func (m *Rectangle) GetHi() *Point {
+	if m != nil {
+		return m.Hi
+	}
+	return nil
+}
+
+type Feature struct {
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Location             *Point   `protobuf:"bytes,2,opt,name=location,proto3" json:"location,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Feature) Reset()         { *m = Feature{} }
+func (m *Feature) String() string { return proto.CompactTextString(m) }
+func (*Feature) ProtoMessage()    {}
+func (*Feature) Descriptor() ([]byte, []int) {
+	return fileDescriptor_916a1dca15719595, []int{11}
+}
+
+func (m *Feature) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Feature.Unmarshal(m, b)
+}
+func (m *Feature) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Feature.Marshal(b, m, deterministic)
+}
+func (m *Feature) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Feature.Merge(m, src)
+}
+func (m *Feature) XXX_Size() int {
+	return xxx_messageInfo_Feature.Size(m)
+}
+func (m *Feature) XXX_DiscardUnknown() {
+	xxx_messageInfo_Feature.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Feature proto.InternalMessageInfo
+
+func (m *Feature) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
+func (m *Feature) GetLocation() *Point {
+	if m != nil {
+		return m.Location
+	}
+	return nil
+}
+
+type RouteNote struct {
+	Location             *Point   `protobuf:"bytes,1,opt,name=location,proto3" json:"location,omitempty"`
+	Message              string   `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *RouteNote) Reset()         { *m = RouteNote{} }
+func (m *RouteNote) String() string { return proto.CompactTextString(m) }
+func (*RouteNote) ProtoMessage()    {}
+func (*RouteNote) Descriptor() ([]byte, []int) {
+	return fileDescriptor_916a1dca15719595, []int{12}
+}
+
+func (m *RouteNote) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_RouteNote.Unmarshal(m, b)
+}
+func (m *RouteNote) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_RouteNote.Marshal(b, m, deterministic)
+}
+func (m *RouteNote) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RouteNote.Merge(m, src)
+}
+func (m *RouteNote) XXX_Size() int {
+	return xxx_messageInfo_RouteNote.Size(m)
+}
+func (m *RouteNote) XXX_DiscardUnknown() {
+	xxx_messageInfo_RouteNote.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_RouteNote proto.InternalMessageInfo
+
+func (m *RouteNote) GetLocation() *Point {
+	if m != nil {
+		return m.Location
+	}
+	return nil
+}
+
+func (m *RouteNote) GetMessage() string {
+	if m != nil {
+		return m.Message
+	}
+	return ""
+}
+
+type RouteSummary struct {
+	PointCount           int32    `protobuf:"varint,1,opt,name=point_count,json=pointCount,proto3" json:"point_count,omitempty"`
+	FeatureCount         int32    `protobuf:"varint,2,opt,name=feature_count,json=featureCount,proto3" json:"feature_count,omitempty"`
+	Distance             int32    `protobuf:"varint,3,opt,name=distance,proto3" json:"distance,omitempty"`
+	ElapsedTime          int32    `protobuf:"varint,4,opt,name=elapsed_time,json=elapsedTime,proto3" json:"elapsed_time,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *RouteSummary) Reset()         { *m = RouteSummary{} }
+func (m *RouteSummary) String() string { return proto.CompactTextString(m) }
+func (*RouteSummary) ProtoMessage()    {}
+func (*RouteSummary) Descriptor() ([]byte, []int) {
+	return fileDescriptor_916a1dca15719595, []int{13}
+}
+
+func (m *RouteSummary) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_RouteSummary.Unmarshal(m, b)
+}
+func (m *RouteSummary) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_RouteSummary.Marshal(b, m, deterministic)
+}
+func (m *RouteSummary) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_RouteSummary.Merge(m, src)
+}
+func (m *RouteSummary) XXX_Size() int {
+	return xxx_messageInfo_RouteSummary.Size(m)
+}
+func (m *RouteSummary) XXX_DiscardUnknown() {
+	xxx_messageInfo_RouteSummary.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_RouteSummary proto.InternalMessageInfo
+
+func (m *RouteSummary) GetPointCount() int32 {
+	if m != nil {
+		return m.PointCount
+	}
+	return 0
+}
+
+func (m *RouteSummary) GetFeatureCount() int32 {
+	if m != nil {
+		return m.FeatureCount
+	}
+	return 0
+}
+
+func (m *RouteSummary) GetDistance() int32 {
+	if m != nil {
+		return m.Distance
+	}
+	return 0
+}
+
+func (m *RouteSummary) GetElapsedTime() int32 {
+	if m != nil {
+		return m.ElapsedTime
+	}
+	return 0
+}
+
 func init() {
 	proto.RegisterType((*Account)(nil), "v1.Account")
+	proto.RegisterType((*Request)(nil), "v1.Request")
+	proto.RegisterType((*Response)(nil), "v1.Response")
 	proto.RegisterType((*HomeRequest)(nil), "v1.HomeRequest")
 	proto.RegisterType((*HomeResponse)(nil), "v1.HomeResponse")
 	proto.RegisterType((*RegisterRequest)(nil), "v1.RegisterRequest")
 	proto.RegisterType((*RegisterResponse)(nil), "v1.RegisterResponse")
+	proto.RegisterType((*GetAllRequest)(nil), "v1.GetAllRequest")
+	proto.RegisterType((*GetAllResponse)(nil), "v1.GetAllResponse")
+	proto.RegisterType((*Point)(nil), "v1.Point")
+	proto.RegisterType((*Rectangle)(nil), "v1.Rectangle")
+	proto.RegisterType((*Feature)(nil), "v1.Feature")
+	proto.RegisterType((*RouteNote)(nil), "v1.RouteNote")
+	proto.RegisterType((*RouteSummary)(nil), "v1.RouteSummary")
 }
 
 func init() { proto.RegisterFile("profile-service.proto", fileDescriptor_916a1dca15719595) }
 
 var fileDescriptor_916a1dca15719595 = []byte{
-	// 669 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x53, 0xcd, 0x6e, 0xdb, 0x46,
-	0x10, 0x06, 0x49, 0xcb, 0x92, 0x96, 0x82, 0xad, 0x6e, 0x5d, 0x94, 0x50, 0x5b, 0x98, 0xe5, 0xc9,
-	0x30, 0x4c, 0xd2, 0x52, 0x8d, 0x1e, 0x5c, 0x14, 0xa8, 0x8d, 0x1e, 0x92, 0x8b, 0x11, 0xc8, 0xce,
-	0x59, 0x58, 0x91, 0x23, 0x6a, 0x6d, 0x72, 0x87, 0xd9, 0x5d, 0xca, 0x39, 0xe7, 0x10, 0x20, 0x39,
-	0x3a, 0x97, 0x20, 0x97, 0x3c, 0x54, 0x5e, 0x21, 0x0f, 0x12, 0x70, 0x49, 0xc1, 0x49, 0x84, 0xc4,
-	0x39, 0x49, 0xf3, 0xfd, 0x71, 0x38, 0x9c, 0x21, 0xbf, 0x94, 0x12, 0x17, 0x3c, 0x87, 0x50, 0x81,
-	0x5c, 0xf1, 0x04, 0xa2, 0x52, 0xa2, 0x46, 0x6a, 0xaf, 0xc6, 0xa3, 0xfd, 0x0c, 0x31, 0xcb, 0x21,
-	0x36, 0xc8, 0xbc, 0x5a, 0xc4, 0x9a, 0x17, 0xa0, 0x34, 0x2b, 0xca, 0x46, 0x34, 0xfa, 0xbd, 0x15,
-	0xb0, 0x92, 0xc7, 0x4c, 0x08, 0xd4, 0x4c, 0x73, 0x14, 0xaa, 0x65, 0x8f, 0xcc, 0x4f, 0x12, 0x66,
-	0x20, 0x42, 0x75, 0xcb, 0xb2, 0x0c, 0x64, 0x8c, 0xa5, 0x51, 0x6c, 0xaa, 0x83, 0x3b, 0x87, 0x74,
-	0xcf, 0x92, 0x04, 0x2b, 0xa1, 0xe9, 0x0e, 0xb1, 0x79, 0xea, 0x59, 0xbe, 0x75, 0xd0, 0x9f, 0xda,
-	0x3c, 0xa5, 0x7b, 0xa4, 0x03, 0x05, 0xe3, 0xb9, 0x67, 0x1b, 0xa8, 0x29, 0xe8, 0x1f, 0x84, 0x2c,
-	0xb8, 0x54, 0x7a, 0x26, 0x58, 0x01, 0x9e, 0x63, 0xa8, 0xbe, 0x41, 0x2e, 0x58, 0x01, 0xf4, 0x37,
-	0xd2, 0xcf, 0xd9, 0x9a, 0xdd, 0x32, 0x6c, 0xaf, 0x06, 0x0c, 0xf9, 0x27, 0x19, 0x94, 0x4b, 0x14,
-	0x30, 0x13, 0x55, 0x31, 0x07, 0xe9, 0x75, 0x0c, 0xef, 0x1a, 0xec, 0xc2, 0x40, 0xb5, 0xbf, 0x52,
-	0x20, 0x1b, 0xff, 0x76, 0xe3, 0xaf, 0x01, 0xe3, 0x1f, 0x91, 0x5e, 0xc9, 0x94, 0xba, 0x45, 0x99,
-	0x7a, 0xdd, 0x86, 0x5b, 0xd7, 0x75, 0x5f, 0x6c, 0xc5, 0x34, 0x93, 0xb3, 0x4a, 0xe6, 0x5e, 0xaf,
-	0xe9, 0xab, 0x41, 0x9e, 0xca, 0x9c, 0x1e, 0x11, 0x27, 0xc5, 0xb9, 0xd7, 0xf7, 0xad, 0x03, 0x77,
-	0x32, 0x8a, 0x9a, 0x11, 0x46, 0xeb, 0x19, 0x47, 0x57, 0xeb, 0x19, 0x4f, 0x6b, 0x19, 0xfd, 0x97,
-	0x0c, 0x12, 0x09, 0x4c, 0x43, 0x3a, 0xab, 0xa7, 0xef, 0x91, 0x07, 0x6d, 0x6e, 0xab, 0xaf, 0x91,
-	0xda, 0x5e, 0x95, 0xe9, 0xbd, 0xdd, 0x7d, 0xd8, 0xde, 0xea, 0x6b, 0x24, 0xd8, 0x27, 0xee, 0x23,
-	0x2c, 0x60, 0x0a, 0xcf, 0x2a, 0x50, 0x9a, 0x0e, 0x89, 0xc3, 0x4a, 0xde, 0x7e, 0x98, 0xfa, 0x6f,
-	0x70, 0x40, 0x06, 0x8d, 0x40, 0x95, 0x28, 0x14, 0x50, 0x8f, 0x74, 0x0b, 0x50, 0x8a, 0x65, 0xd0,
-	0xaa, 0xd6, 0x65, 0x70, 0x49, 0x76, 0xa7, 0x90, 0x71, 0xa5, 0x41, 0x7e, 0x33, 0x8e, 0x46, 0x64,
-	0xc0, 0x9a, 0x1d, 0x98, 0x71, 0xb1, 0x40, 0xf3, 0xbd, 0xdd, 0x89, 0x1b, 0xad, 0xc6, 0x51, 0xbb,
-	0x1b, 0x53, 0xb7, 0x15, 0x3c, 0x16, 0x0b, 0x0c, 0xae, 0xc9, 0xf0, 0x3e, 0xb4, 0x6d, 0x61, 0x33,
-	0x75, 0x8f, 0x74, 0x34, 0xde, 0x80, 0x58, 0xaf, 0x8f, 0x29, 0x36, 0x9e, 0xe5, 0x7c, 0xff, 0x59,
-	0x93, 0xb7, 0x16, 0xd9, 0x79, 0xd2, 0xdc, 0xca, 0x65, 0x73, 0x2a, 0xf4, 0x6f, 0xb2, 0x55, 0xbf,
-	0x3d, 0xdd, 0xad, 0x4d, 0x9f, 0x0d, 0x6a, 0x34, 0xbc, 0x07, 0x9a, 0xae, 0x02, 0xf7, 0xc5, 0x87,
-	0x8f, 0x6f, 0xec, 0x0e, 0x75, 0xe2, 0xd5, 0x98, 0x5e, 0x90, 0xde, 0xba, 0x6d, 0xfa, 0x73, 0x2d,
-	0xfd, 0x6a, 0x32, 0xa3, 0xbd, 0x2f, 0xc1, 0x36, 0xe3, 0x57, 0x93, 0xf1, 0x53, 0x30, 0x88, 0x57,
-	0xe3, 0x58, 0xb6, 0xec, 0xa9, 0x75, 0x78, 0xfe, 0xda, 0xbe, 0x3b, 0x7b, 0x69, 0xd3, 0xf7, 0x16,
-	0x19, 0x5c, 0xe1, 0xff, 0xe8, 0xb7, 0xa7, 0x1c, 0xbc, 0xb2, 0x48, 0x9c, 0x61, 0x98, 0xc9, 0x32,
-	0x09, 0x97, 0x5a, 0x97, 0xa1, 0x04, 0xa5, 0xc3, 0x82, 0x27, 0x12, 0x5b, 0x49, 0xa8, 0x2b, 0x8d,
-	0x92, 0xb3, 0xdc, 0x2f, 0x25, 0x5e, 0x43, 0xa2, 0xe9, 0x79, 0x2d, 0x54, 0xa7, 0x71, 0x9c, 0x71,
-	0xbd, 0xac, 0xe6, 0x51, 0x82, 0x45, 0xcc, 0x0a, 0x85, 0x37, 0x98, 0xff, 0x68, 0xd6, 0x88, 0x16,
-	0x90, 0xf2, 0xaa, 0xf8, 0xaf, 0xf5, 0xd5, 0x19, 0x13, 0x67, 0x1c, 0x1d, 0x1f, 0x5a, 0xd6, 0x64,
-	0xc8, 0xca, 0x32, 0xe7, 0x89, 0xb9, 0xfd, 0xf8, 0x5a, 0xa1, 0x38, 0xdd, 0x40, 0xa6, 0xff, 0x10,
-	0xe7, 0xe4, 0xf8, 0x84, 0x9e, 0x90, 0xc3, 0x29, 0xe8, 0x4a, 0x0a, 0x48, 0xfd, 0xdb, 0x25, 0x08,
-	0x5f, 0x2f, 0xc1, 0x97, 0xa0, 0xb0, 0x92, 0x09, 0xf8, 0x29, 0x82, 0xf2, 0x05, 0x6a, 0x1f, 0x9e,
-	0x73, 0xa5, 0x23, 0xba, 0x4d, 0xb6, 0xde, 0xd9, 0x56, 0x77, 0xbe, 0x6d, 0x96, 0xfa, 0xaf, 0x4f,
-	0x01, 0x00, 0x00, 0xff, 0xff, 0x0a, 0x16, 0x97, 0xbe, 0xd9, 0x04, 0x00, 0x00,
+	// 936 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x55, 0xdd, 0x6e, 0xe3, 0x44,
+	0x14, 0x5e, 0x3b, 0x4d, 0x93, 0x1c, 0xa7, 0xdd, 0x32, 0x14, 0x91, 0x35, 0x8b, 0xea, 0x35, 0x02,
+	0x55, 0xd5, 0xd6, 0x69, 0x4b, 0x05, 0xd2, 0x22, 0x24, 0xca, 0x56, 0x2c, 0x95, 0xaa, 0x6a, 0xe5,
+	0x2e, 0xdc, 0x46, 0x53, 0xfb, 0x24, 0xf1, 0x62, 0xcf, 0x98, 0x99, 0x71, 0x0a, 0xb7, 0x3c, 0x02,
+	0x7b, 0xc7, 0x4b, 0x20, 0x71, 0xc1, 0x7b, 0x20, 0x5e, 0x81, 0x07, 0x41, 0xf3, 0xe3, 0xfe, 0x6c,
+	0x54, 0x55, 0x7b, 0x95, 0xcc, 0xf7, 0x73, 0x66, 0xe6, 0xcc, 0x39, 0xc7, 0xf0, 0x41, 0x2d, 0xf8,
+	0xb4, 0x28, 0x71, 0x57, 0xa2, 0x58, 0x14, 0x19, 0x26, 0xb5, 0xe0, 0x8a, 0x13, 0x7f, 0xb1, 0x1f,
+	0x6e, 0xcd, 0x38, 0x9f, 0x95, 0x38, 0x36, 0xc8, 0x45, 0x33, 0x1d, 0xab, 0xa2, 0x42, 0xa9, 0x68,
+	0x55, 0x5b, 0x51, 0xf8, 0xd8, 0x09, 0x68, 0x5d, 0x8c, 0x29, 0x63, 0x5c, 0x51, 0x55, 0x70, 0x26,
+	0x1d, 0xfb, 0xd4, 0xfc, 0x64, 0xbb, 0x33, 0x64, 0xbb, 0xf2, 0x92, 0xce, 0x66, 0x28, 0xc6, 0xbc,
+	0x36, 0x8a, 0x65, 0x75, 0xfc, 0x67, 0x07, 0x7a, 0x47, 0x59, 0xc6, 0x1b, 0xa6, 0xc8, 0x3a, 0xf8,
+	0x45, 0x3e, 0xf2, 0x22, 0x6f, 0x7b, 0x90, 0xfa, 0x45, 0x4e, 0x36, 0xa1, 0x8b, 0x15, 0x2d, 0xca,
+	0x91, 0x6f, 0x20, 0xbb, 0x20, 0x1f, 0x03, 0x4c, 0x0b, 0x21, 0xd5, 0x84, 0xd1, 0x0a, 0x47, 0x1d,
+	0x43, 0x0d, 0x0c, 0x72, 0x46, 0x2b, 0x24, 0x1f, 0xc1, 0xa0, 0xa4, 0x2d, 0xbb, 0x62, 0xd8, 0xbe,
+	0x06, 0x0c, 0xf9, 0x04, 0x86, 0xf5, 0x9c, 0x33, 0x9c, 0xb0, 0xa6, 0xba, 0x40, 0x31, 0xea, 0x1a,
+	0x3e, 0x30, 0xd8, 0x99, 0x81, 0xb4, 0xbf, 0x91, 0x28, 0xac, 0x7f, 0xd5, 0xfa, 0x35, 0x60, 0xfc,
+	0x21, 0xf4, 0x6b, 0x2a, 0xe5, 0x25, 0x17, 0xf9, 0xa8, 0x67, 0xb9, 0x76, 0xad, 0xcf, 0x45, 0x17,
+	0x54, 0x51, 0x31, 0x69, 0x44, 0x39, 0xea, 0xdb, 0x73, 0x59, 0xe4, 0x07, 0x51, 0xea, 0xb8, 0x15,
+	0x17, 0x38, 0x29, 0xd8, 0x94, 0x8f, 0x06, 0xd6, 0xab, 0x81, 0x13, 0x36, 0xe5, 0xe4, 0x29, 0x74,
+	0x72, 0x7e, 0x31, 0x82, 0xc8, 0xdb, 0x0e, 0x0e, 0xc2, 0xc4, 0xe6, 0x37, 0x69, 0x1f, 0x20, 0x79,
+	0xd5, 0x3e, 0x40, 0xaa, 0x65, 0xe4, 0x6b, 0x18, 0x66, 0x02, 0xa9, 0xc2, 0x7c, 0xa2, 0x9f, 0x66,
+	0x14, 0xdc, 0x6b, 0x0b, 0x9c, 0x5e, 0x23, 0xda, 0xde, 0xd4, 0xf9, 0xb5, 0x7d, 0x78, 0xbf, 0xdd,
+	0xe9, 0x35, 0x12, 0x0f, 0xa0, 0x97, 0xe2, 0xcf, 0x0d, 0x4a, 0x15, 0x03, 0xf4, 0x53, 0x94, 0x35,
+	0x67, 0x12, 0xe3, 0x2d, 0x08, 0xbe, 0xe7, 0x15, 0x3a, 0x8a, 0x6c, 0x40, 0x87, 0xd6, 0x85, 0x7b,
+	0x4c, 0xfd, 0x37, 0xde, 0x86, 0xa1, 0x15, 0x58, 0x03, 0x19, 0x41, 0xaf, 0x42, 0x29, 0xe9, 0x0c,
+	0x9d, 0xaa, 0x5d, 0xc6, 0xe7, 0xf0, 0x30, 0xc5, 0x59, 0x21, 0x15, 0x8a, 0x3b, 0xc3, 0x91, 0x04,
+	0x86, 0xd4, 0xd6, 0x8d, 0x4d, 0xa9, 0x6f, 0x6e, 0x11, 0x24, 0x8b, 0xfd, 0xc4, 0xd5, 0x53, 0x1a,
+	0x38, 0x81, 0x4e, 0x71, 0xfc, 0x1a, 0x36, 0xae, 0x83, 0xba, 0x23, 0x2c, 0x47, 0xdd, 0x84, 0xae,
+	0xe2, 0x3f, 0x21, 0x6b, 0x4b, 0xce, 0x2c, 0x96, 0xf6, 0xea, 0xdc, 0xb3, 0xd7, 0x13, 0x58, 0x7b,
+	0x81, 0xea, 0xa8, 0x2c, 0xef, 0xce, 0x46, 0x0a, 0xeb, 0xad, 0xe4, 0xce, 0xc3, 0xbc, 0xeb, 0x15,
+	0x8f, 0xa0, 0xfb, 0x92, 0x17, 0x4c, 0xe9, 0x32, 0x2d, 0xa9, 0x2a, 0x54, 0x93, 0xdb, 0xdc, 0x76,
+	0xd3, 0xab, 0x35, 0x79, 0x0c, 0x83, 0x92, 0xb3, 0x99, 0x25, 0x7d, 0x43, 0x5e, 0x03, 0xf1, 0x11,
+	0x0c, 0x52, 0xcc, 0x14, 0x65, 0xb3, 0x12, 0xc9, 0x23, 0xf0, 0x4b, 0x6e, 0x02, 0x04, 0x07, 0x03,
+	0xbd, 0xab, 0x89, 0x9e, 0xfa, 0x25, 0xd7, 0xd4, 0xbc, 0x70, 0x07, 0xba, 0x49, 0xcd, 0x8b, 0xf8,
+	0x18, 0x7a, 0xdf, 0x21, 0x55, 0x8d, 0x40, 0x42, 0x60, 0xc5, 0xb4, 0x91, 0xbd, 0x93, 0xf9, 0x4f,
+	0x3e, 0x85, 0x7e, 0xc9, 0x33, 0x33, 0x03, 0x96, 0xfd, 0x57, 0x54, 0x7c, 0x0a, 0x83, 0x94, 0x37,
+	0x0a, 0xcf, 0xb8, 0xba, 0xed, 0xf1, 0xee, 0xf4, 0xdc, 0xac, 0x28, 0xff, 0x76, 0x45, 0xbd, 0xf1,
+	0x60, 0x68, 0xc2, 0x9d, 0x37, 0x55, 0x45, 0xc5, 0xaf, 0x64, 0x0b, 0x82, 0x5a, 0xbb, 0x27, 0x26,
+	0x7b, 0x2e, 0x49, 0x60, 0xa0, 0xe7, 0x66, 0x16, 0x7d, 0x02, 0x6b, 0x53, 0x7b, 0x0b, 0x27, 0xb1,
+	0xa9, 0x1a, 0x3a, 0xd0, 0x8a, 0x42, 0xe8, 0xe7, 0x85, 0x54, 0x94, 0x65, 0x76, 0x10, 0x75, 0xd3,
+	0xab, 0xb5, 0x1e, 0x35, 0x58, 0xd2, 0x5a, 0xb6, 0x5d, 0xb6, 0x62, 0xf8, 0xc0, 0x61, 0xba, 0x93,
+	0x0e, 0xfe, 0xf1, 0x61, 0xfd, 0xa5, 0x1d, 0xc3, 0xe7, 0x76, 0x0a, 0x93, 0x2f, 0x60, 0x45, 0x37,
+	0x09, 0x79, 0xa8, 0xef, 0x77, 0xa3, 0x9f, 0xc2, 0x8d, 0x6b, 0xc0, 0x35, 0x5c, 0xf0, 0xdb, 0xbf,
+	0xff, 0xbd, 0xf1, 0xbb, 0xa4, 0x33, 0x5e, 0xec, 0x93, 0x33, 0xdd, 0x89, 0xb6, 0xba, 0xc9, 0xfb,
+	0x5a, 0xfa, 0x56, 0x03, 0x85, 0x9b, 0xb7, 0x41, 0x17, 0xe3, 0x43, 0x13, 0xe3, 0xbd, 0x78, 0x38,
+	0x5e, 0xec, 0x8f, 0x85, 0x63, 0x9f, 0x79, 0x3b, 0xe4, 0x33, 0x80, 0x17, 0xa8, 0xda, 0x77, 0xbc,
+	0xce, 0x76, 0x68, 0xaa, 0xcf, 0xe1, 0xf1, 0x03, 0x5d, 0xa2, 0xa7, 0x85, 0x6c, 0x85, 0x92, 0xac,
+	0xd9, 0x6d, 0x5c, 0x05, 0xbd, 0xa5, 0xde, 0xf3, 0x48, 0x02, 0x41, 0x8a, 0x19, 0x17, 0xb9, 0x79,
+	0x8d, 0x9b, 0x81, 0xcd, 0x05, 0x6f, 0xbe, 0x51, 0xfc, 0x60, 0xdb, 0x23, 0x63, 0x57, 0x06, 0xcf,
+	0xe7, 0x54, 0xb9, 0xe0, 0x6d, 0x55, 0x84, 0xb7, 0x97, 0x5a, 0xbe, 0xe7, 0x7d, 0xfb, 0xb7, 0xf7,
+	0xfb, 0xd1, 0x5f, 0x1e, 0x39, 0x85, 0xe1, 0x2b, 0x7e, 0xcc, 0x23, 0xf7, 0x75, 0x8b, 0xbf, 0x84,
+	0x47, 0xee, 0x83, 0xd7, 0x42, 0xd1, 0x94, 0x8b, 0xe8, 0xc7, 0x93, 0xb3, 0x93, 0xe3, 0x30, 0xac,
+	0xe7, 0xb4, 0xa2, 0x6c, 0xae, 0x1a, 0xca, 0x32, 0xc1, 0xa5, 0xfc, 0x66, 0xa6, 0xbf, 0x34, 0x49,
+	0xc6, 0xab, 0x83, 0xce, 0x7e, 0xb2, 0xb7, 0xe3, 0x79, 0x07, 0x1b, 0xb4, 0xae, 0xcb, 0xc2, 0x16,
+	0xda, 0xf8, 0xb5, 0xe4, 0xec, 0xd9, 0x12, 0x92, 0x7e, 0x05, 0x9d, 0xc3, 0xbd, 0x43, 0x72, 0x08,
+	0x3b, 0x29, 0xaa, 0x46, 0x30, 0xcc, 0xa3, 0xcb, 0x39, 0xb2, 0x48, 0xcd, 0x31, 0x12, 0x28, 0x79,
+	0x23, 0x32, 0x8c, 0x72, 0x8e, 0x32, 0x62, 0x5c, 0x45, 0xf8, 0x4b, 0x21, 0x55, 0x42, 0x56, 0x61,
+	0xe5, 0x0f, 0xdf, 0xeb, 0x5d, 0xac, 0x9a, 0xb9, 0xfb, 0xf9, 0xff, 0x01, 0x00, 0x00, 0xff, 0xff,
+	0x25, 0x34, 0x6d, 0x43, 0x99, 0x07, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -396,6 +830,17 @@ const _ = grpc.SupportPackageIsVersion4
 type ProfileServiceClient interface {
 	Home(ctx context.Context, in *HomeRequest, opts ...grpc.CallOption) (*HomeResponse, error)
 	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error)
+	//    rpc getAll (GetAllRequest) returns (stream GetAllResponse) {
+	//        option(google.api.http) = {
+	//            post: "/v1/all"
+	//            body: "*"
+	//        };
+	//    }
+	//
+	GetFeature(ctx context.Context, in *Point, opts ...grpc.CallOption) (*Feature, error)
+	ListFeatures(ctx context.Context, in *Rectangle, opts ...grpc.CallOption) (ProfileService_ListFeaturesClient, error)
+	RecordRoute(ctx context.Context, opts ...grpc.CallOption) (ProfileService_RecordRouteClient, error)
+	RouteChat(ctx context.Context, opts ...grpc.CallOption) (ProfileService_RouteChatClient, error)
 }
 
 type profileServiceClient struct {
@@ -424,10 +869,127 @@ func (c *profileServiceClient) Register(ctx context.Context, in *RegisterRequest
 	return out, nil
 }
 
+func (c *profileServiceClient) GetFeature(ctx context.Context, in *Point, opts ...grpc.CallOption) (*Feature, error) {
+	out := new(Feature)
+	err := c.cc.Invoke(ctx, "/v1.ProfileService/GetFeature", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *profileServiceClient) ListFeatures(ctx context.Context, in *Rectangle, opts ...grpc.CallOption) (ProfileService_ListFeaturesClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_ProfileService_serviceDesc.Streams[0], "/v1.ProfileService/ListFeatures", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &profileServiceListFeaturesClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type ProfileService_ListFeaturesClient interface {
+	Recv() (*Feature, error)
+	grpc.ClientStream
+}
+
+type profileServiceListFeaturesClient struct {
+	grpc.ClientStream
+}
+
+func (x *profileServiceListFeaturesClient) Recv() (*Feature, error) {
+	m := new(Feature)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *profileServiceClient) RecordRoute(ctx context.Context, opts ...grpc.CallOption) (ProfileService_RecordRouteClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_ProfileService_serviceDesc.Streams[1], "/v1.ProfileService/RecordRoute", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &profileServiceRecordRouteClient{stream}
+	return x, nil
+}
+
+type ProfileService_RecordRouteClient interface {
+	Send(*Point) error
+	CloseAndRecv() (*RouteSummary, error)
+	grpc.ClientStream
+}
+
+type profileServiceRecordRouteClient struct {
+	grpc.ClientStream
+}
+
+func (x *profileServiceRecordRouteClient) Send(m *Point) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *profileServiceRecordRouteClient) CloseAndRecv() (*RouteSummary, error) {
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	m := new(RouteSummary)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *profileServiceClient) RouteChat(ctx context.Context, opts ...grpc.CallOption) (ProfileService_RouteChatClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_ProfileService_serviceDesc.Streams[2], "/v1.ProfileService/RouteChat", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &profileServiceRouteChatClient{stream}
+	return x, nil
+}
+
+type ProfileService_RouteChatClient interface {
+	Send(*RouteNote) error
+	Recv() (*RouteNote, error)
+	grpc.ClientStream
+}
+
+type profileServiceRouteChatClient struct {
+	grpc.ClientStream
+}
+
+func (x *profileServiceRouteChatClient) Send(m *RouteNote) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *profileServiceRouteChatClient) Recv() (*RouteNote, error) {
+	m := new(RouteNote)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // ProfileServiceServer is the server API for ProfileService service.
 type ProfileServiceServer interface {
 	Home(context.Context, *HomeRequest) (*HomeResponse, error)
 	Register(context.Context, *RegisterRequest) (*RegisterResponse, error)
+	//    rpc getAll (GetAllRequest) returns (stream GetAllResponse) {
+	//        option(google.api.http) = {
+	//            post: "/v1/all"
+	//            body: "*"
+	//        };
+	//    }
+	//
+	GetFeature(context.Context, *Point) (*Feature, error)
+	ListFeatures(*Rectangle, ProfileService_ListFeaturesServer) error
+	RecordRoute(ProfileService_RecordRouteServer) error
+	RouteChat(ProfileService_RouteChatServer) error
 }
 
 // UnimplementedProfileServiceServer can be embedded to have forward compatible implementations.
@@ -439,6 +1001,18 @@ func (*UnimplementedProfileServiceServer) Home(ctx context.Context, req *HomeReq
 }
 func (*UnimplementedProfileServiceServer) Register(ctx context.Context, req *RegisterRequest) (*RegisterResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Register not implemented")
+}
+func (*UnimplementedProfileServiceServer) GetFeature(ctx context.Context, req *Point) (*Feature, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetFeature not implemented")
+}
+func (*UnimplementedProfileServiceServer) ListFeatures(req *Rectangle, srv ProfileService_ListFeaturesServer) error {
+	return status.Errorf(codes.Unimplemented, "method ListFeatures not implemented")
+}
+func (*UnimplementedProfileServiceServer) RecordRoute(srv ProfileService_RecordRouteServer) error {
+	return status.Errorf(codes.Unimplemented, "method RecordRoute not implemented")
+}
+func (*UnimplementedProfileServiceServer) RouteChat(srv ProfileService_RouteChatServer) error {
+	return status.Errorf(codes.Unimplemented, "method RouteChat not implemented")
 }
 
 func RegisterProfileServiceServer(s *grpc.Server, srv ProfileServiceServer) {
@@ -481,6 +1055,97 @@ func _ProfileService_Register_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ProfileService_GetFeature_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Point)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProfileServiceServer).GetFeature(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/v1.ProfileService/GetFeature",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProfileServiceServer).GetFeature(ctx, req.(*Point))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProfileService_ListFeatures_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(Rectangle)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ProfileServiceServer).ListFeatures(m, &profileServiceListFeaturesServer{stream})
+}
+
+type ProfileService_ListFeaturesServer interface {
+	Send(*Feature) error
+	grpc.ServerStream
+}
+
+type profileServiceListFeaturesServer struct {
+	grpc.ServerStream
+}
+
+func (x *profileServiceListFeaturesServer) Send(m *Feature) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _ProfileService_RecordRoute_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(ProfileServiceServer).RecordRoute(&profileServiceRecordRouteServer{stream})
+}
+
+type ProfileService_RecordRouteServer interface {
+	SendAndClose(*RouteSummary) error
+	Recv() (*Point, error)
+	grpc.ServerStream
+}
+
+type profileServiceRecordRouteServer struct {
+	grpc.ServerStream
+}
+
+func (x *profileServiceRecordRouteServer) SendAndClose(m *RouteSummary) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *profileServiceRecordRouteServer) Recv() (*Point, error) {
+	m := new(Point)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func _ProfileService_RouteChat_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(ProfileServiceServer).RouteChat(&profileServiceRouteChatServer{stream})
+}
+
+type ProfileService_RouteChatServer interface {
+	Send(*RouteNote) error
+	Recv() (*RouteNote, error)
+	grpc.ServerStream
+}
+
+type profileServiceRouteChatServer struct {
+	grpc.ServerStream
+}
+
+func (x *profileServiceRouteChatServer) Send(m *RouteNote) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *profileServiceRouteChatServer) Recv() (*RouteNote, error) {
+	m := new(RouteNote)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 var _ProfileService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "v1.ProfileService",
 	HandlerType: (*ProfileServiceServer)(nil),
@@ -493,7 +1158,28 @@ var _ProfileService_serviceDesc = grpc.ServiceDesc{
 			MethodName: "Register",
 			Handler:    _ProfileService_Register_Handler,
 		},
+		{
+			MethodName: "GetFeature",
+			Handler:    _ProfileService_GetFeature_Handler,
+		},
 	},
-	Streams:  []grpc.StreamDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "ListFeatures",
+			Handler:       _ProfileService_ListFeatures_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "RecordRoute",
+			Handler:       _ProfileService_RecordRoute_Handler,
+			ClientStreams: true,
+		},
+		{
+			StreamName:    "RouteChat",
+			Handler:       _ProfileService_RouteChat_Handler,
+			ServerStreams: true,
+			ClientStreams: true,
+		},
+	},
 	Metadata: "profile-service.proto",
 }
