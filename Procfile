@@ -1,1 +1,1 @@
-app: t-fashion
+web: t-fashion
