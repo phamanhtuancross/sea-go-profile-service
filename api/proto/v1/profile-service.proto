@@ -111,6 +111,15 @@ message RouteSummary {
     int32 elapsed_time = 4;
 }
 
+message EmptyParameters {}
+
+message FashionCategory {
+    int32 id = 1;
+    string name = 2;
+    string description = 3;
+    string image_url = 4;
+}
+
 
 service ProfileService {
 
@@ -146,5 +155,5 @@ service ProfileService {
 
     rpc RouteChat(stream RouteNote) returns (stream RouteNote) {}
 
-
+    rpc ListFashionCategories(EmptyParameters) returns (stream FashionCategory) {}
 }

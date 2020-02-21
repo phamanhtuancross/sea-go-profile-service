@@ -168,6 +168,24 @@
         }
       }
     },
+    "v1FashionCategory": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "image_url": {
+          "type": "string"
+        }
+      }
+    },
     "v1Feature": {
       "type": "object",
       "properties": {
@@ -260,6 +278,18 @@
     }
   },
   "x-stream-definitions": {
+    "v1FashionCategory": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "$ref": "#/definitions/v1FashionCategory"
+        },
+        "error": {
+          "$ref": "#/definitions/runtimeStreamError"
+        }
+      },
+      "title": "Stream result of v1FashionCategory"
+    },
     "v1Feature": {
       "type": "object",
       "properties": {

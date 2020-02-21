@@ -111,6 +111,22 @@ fileprivate final class V1_ProfileServiceRouteChatCallBase: ClientCallBidirectio
   override class var method: String { return "/v1.ProfileService/RouteChat" }
 }
 
+internal protocol V1_ProfileServiceListFashionCategoriesCall: ClientCallServerStreaming {
+  /// Do not call this directly, call `receive()` in the protocol extension below instead.
+  func _receive(timeout: DispatchTime) throws -> V1_FashionCategory?
+  /// Call this to wait for a result. Nonblocking.
+  func receive(completion: @escaping (ResultOrRPCError<V1_FashionCategory?>) -> Void) throws
+}
+
+internal extension V1_ProfileServiceListFashionCategoriesCall {
+  /// Call this to wait for a result. Blocking.
+  func receive(timeout: DispatchTime = .distantFuture) throws -> V1_FashionCategory? { return try self._receive(timeout: timeout) }
+}
+
+fileprivate final class V1_ProfileServiceListFashionCategoriesCallBase: ClientCallServerStreamingBase<V1_EmptyParameters, V1_FashionCategory>, V1_ProfileServiceListFashionCategoriesCall {
+  override class var method: String { return "/v1.ProfileService/ListFashionCategories" }
+}
+
 
 /// Instantiate V1_ProfileServiceServiceClient, then call methods of this protocol to make API calls.
 internal protocol V1_ProfileServiceService: ServiceClient {
@@ -143,6 +159,11 @@ internal protocol V1_ProfileServiceService: ServiceClient {
   /// Use methods on the returned object to stream messages,
   /// to wait for replies, and to close the connection.
   func routeChat(completion: ((CallResult) -> Void)?) throws -> V1_ProfileServiceRouteChatCall
+
+  /// Asynchronous. Server-streaming.
+  /// Send the initial message.
+  /// Use methods on the returned object to get streamed responses.
+  func listFashionCategories(_ request: V1_EmptyParameters, completion: ((CallResult) -> Void)?) throws -> V1_ProfileServiceListFashionCategoriesCall
 
 }
 
@@ -204,6 +225,14 @@ internal final class V1_ProfileServiceServiceClient: ServiceClientBase, V1_Profi
       .start(metadata: metadata, completion: completion)
   }
 
+  /// Asynchronous. Server-streaming.
+  /// Send the initial message.
+  /// Use methods on the returned object to get streamed responses.
+  internal func listFashionCategories(_ request: V1_EmptyParameters, completion: ((CallResult) -> Void)?) throws -> V1_ProfileServiceListFashionCategoriesCall {
+    return try V1_ProfileServiceListFashionCategoriesCallBase(channel)
+      .start(request: request, metadata: metadata, completion: completion)
+  }
+
 }
 
 /// To build a server, implement a class that conforms to this protocol.
@@ -216,6 +245,7 @@ internal protocol V1_ProfileServiceProvider: ServiceProvider {
   func listFeatures(request: V1_Rectangle, session: V1_ProfileServiceListFeaturesSession) throws -> ServerStatus?
   func recordRoute(session: V1_ProfileServiceRecordRouteSession) throws -> V1_RouteSummary?
   func routeChat(session: V1_ProfileServiceRouteChatSession) throws -> ServerStatus?
+  func listFashionCategories(request: V1_EmptyParameters, session: V1_ProfileServiceListFashionCategoriesSession) throws -> ServerStatus?
 }
 
 extension V1_ProfileServiceProvider {
@@ -254,6 +284,11 @@ extension V1_ProfileServiceProvider {
       return try V1_ProfileServiceRouteChatSessionBase(
         handler: handler,
         providerBlock: { try self.routeChat(session: $0 as! V1_ProfileServiceRouteChatSessionBase) })
+          .run()
+    case "/v1.ProfileService/ListFashionCategories":
+      return try V1_ProfileServiceListFashionCategoriesSessionBase(
+        handler: handler,
+        providerBlock: { try self.listFashionCategories(request: $0, session: $1 as! V1_ProfileServiceListFashionCategoriesSessionBase) })
           .run()
     default:
       throw HandleMethodError.unknownMethod
@@ -343,4 +378,23 @@ internal extension V1_ProfileServiceRouteChatSession {
 }
 
 fileprivate final class V1_ProfileServiceRouteChatSessionBase: ServerSessionBidirectionalStreamingBase<V1_RouteNote, V1_RouteNote>, V1_ProfileServiceRouteChatSession {}
+
+internal protocol V1_ProfileServiceListFashionCategoriesSession: ServerSessionServerStreaming {
+  /// Send a message to the stream. Nonblocking.
+  func send(_ message: V1_FashionCategory, completion: @escaping (Error?) -> Void) throws
+  /// Do not call this directly, call `send()` in the protocol extension below instead.
+  func _send(_ message: V1_FashionCategory, timeout: DispatchTime) throws
+
+  /// Close the connection and send the status. Non-blocking.
+  /// This method should be called if and only if your request handler returns a nil value instead of a server status;
+  /// otherwise SwiftGRPC will take care of sending the status for you.
+  func close(withStatus status: ServerStatus, completion: (() -> Void)?) throws
+}
+
+internal extension V1_ProfileServiceListFashionCategoriesSession {
+  /// Send a message to the stream and wait for the send operation to finish. Blocking.
+  func send(_ message: V1_FashionCategory, timeout: DispatchTime = .distantFuture) throws { try self._send(message, timeout: timeout) }
+}
+
+fileprivate final class V1_ProfileServiceListFashionCategoriesSessionBase: ServerSessionServerStreamingBase<V1_EmptyParameters, V1_FashionCategory>, V1_ProfileServiceListFashionCategoriesSession {}
 

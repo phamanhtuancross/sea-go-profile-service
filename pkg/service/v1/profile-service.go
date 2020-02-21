@@ -25,6 +25,7 @@ type ProfileServiceServer struct {
 	database *sql.DB
 
 	savedFeatures [] * v1Proto.Feature
+	savedFashionCategories [] * v1Proto.FashionCategory
 
 	mu sync.Mutex
 	routeNotes map[string][] * v1Proto.RouteNote
@@ -158,6 +159,27 @@ func (s *ProfileServiceServer) ListFeatures(rect *v1Proto.Rectangle, stream v1Pr
 	return nil
 }
 
+func (s *ProfileServiceServer) ListFashionCategories(empty *v1Proto.EmptyParameters, stream v1Proto.ProfileService_ListFashionCategoriesServer) error {
+		for _, category := range  s.savedFashionCategories {
+			if err := stream.Send(category); err != nil {
+				return err
+			}
+		}
+
+		return nil
+}
+
+
+//func (s *ProfileServiceServer) ListFashionCategories(param *empty.Empty, stream v1Proto.ProfileService_ListFashionCategoriesServer) error {
+//	for _, category := range  s.savedFashionCategories {
+//		if err := stream.Send(category); err != nil {
+//			return err
+//		}
+//	}
+//
+//	return nil
+//}
+
 func inRange(point *v1Proto.Point, rect *v1Proto.Rectangle) bool {
 	left := math.Min(float64(rect.Lo.Longitude), float64(rect.Hi.Longitude))
 	right := math.Max(float64(rect.Lo.Longitude), float64(rect.Hi.Longitude))
@@ -263,6 +285,7 @@ func serialize(point *v1Proto.Point) string {
 func NewProfileServiceServer(database *sql.DB) v1Proto.ProfileServiceServer {
 	var service = ProfileServiceServer{database: database}
 	service.loadLocalDataForSaveFeatures()
+	service.loadLocalDataForSavedFashionCategories()
 	return &service
 }
 
@@ -275,6 +298,18 @@ func (s * ProfileServiceServer) loadLocalDataForSaveFeatures() {
 
 	byteValue, _ := ioutil.ReadAll(jsonFile)
 	json.Unmarshal(byteValue, &s.savedFeatures)
+	defer jsonFile.Close()
+}
+
+func (s * ProfileServiceServer) loadLocalDataForSavedFashionCategories() {
+
+	jsonFile, err := os.Open("./pkg/service/v1/categories.db.json")
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	byteValue, _ := ioutil.ReadAll(jsonFile)
+	json.Unmarshal(byteValue, &s.savedFashionCategories)
 	defer jsonFile.Close()
 }
 

@@ -1,0 +1,102 @@
+[
+  {
+    "id": 1,
+    "name": "Casual",
+    "description": "",
+    "image_url": ""
+  },
+  {
+    "id": 2,
+    "name": "Office Wear",
+    "description": "",
+    "image_url": ""
+  },
+  {
+    "id": 3,
+    "name": "  Sports Wear",
+    "description": "",
+    "image_url": ""
+  },
+  {
+    "id": 4,
+    "name": "Classic",
+    "description": "",
+    "image_url": ""
+  },
+  {
+    "id": 5,
+    "name": "Exotic",
+    "description": "",
+    "image_url": ""
+  },
+  {
+    "id": 6,
+    "name": "Street",
+    "description": "",
+    "image_url": ""
+  },
+  {
+    "id": 7,
+    "name": "Vintage",
+    "description": "",
+    "image_url": ""
+  },
+  {
+    "id": 8,
+    "name": "Chic",
+    "description": "",
+    "image_url": ""
+  },
+  {
+    "id": 9,
+    "name": "Arty",
+    "description": "",
+    "image_url": ""
+  },{
+  "id": 10,
+  "name": "Preppy",
+  "description": "",
+  "image_url": ""
+},{
+  "id": 11,
+  "name": "Bohemian",
+  "description": "",
+  "image_url": ""
+},
+  {
+    "id": 12,
+    "name": "Goth",
+    "description": "",
+    "image_url": ""
+  },
+  {
+    "id": 13,
+    "name": "Grunge",
+    "description": "",
+    "image_url": ""
+  },
+  {
+    "id": 14,
+    "name": "Flamboyant",
+    "description": "",
+    "image_url": ""
+  }
+,{
+  "id": 15,
+  "name": "Punk",
+  "description": "",
+  "image_url": ""
+}
+,{
+  "id": 16,
+  "name": "Rocker",
+  "description": "",
+  "image_url": ""
+},
+  {
+    "id": 17,
+    "name": "Tomboy",
+    "description": "",
+    "image_url": ""
+  }
+]
