@@ -23,7 +23,7 @@ type Config struct {
 
 func main() {
 
-	file, err := os.Open("./configs/config.yml")
+	file, err := os.Open("./src/configs/config.yml")
 
 	if err != nil {
 		fmt.Println("Can not loaded configs from file")

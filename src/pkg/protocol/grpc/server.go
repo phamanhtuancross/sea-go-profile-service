@@ -2,15 +2,15 @@ package grpc
 
 import (
 	"context"
+	v12 "github.com/tuanpa28/profile-service/src/pkg/api/v1"
 	"google.golang.org/grpc"
 	"log"
 	"net"
 	"os"
 	"os/signal"
 )
-import v1 "../../api/v1"
 
-func RunServer(ctx context.Context, v1Api v1.ProfileServiceServer, port string) error {
+func RunServer(ctx context.Context, v1Api v12.ProfileServiceServer, port string) error {
 	listener, err := net.Listen("tcp", ":" + port)
 
 
@@ -19,7 +19,7 @@ func RunServer(ctx context.Context, v1Api v1.ProfileServiceServer, port string) 
 	}
 
 	server := grpc.NewServer()
-	v1.RegisterProfileServiceServer(server,  v1Api)
+	v12.RegisterProfileServiceServer(server,  v1Api)
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt)
 

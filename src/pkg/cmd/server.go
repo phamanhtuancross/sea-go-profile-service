@@ -1,13 +1,13 @@
 package cmd
 
 import (
-	grpc "../protocol/grpc"
-	rest "../protocol/rest"
-	v1 "../service/v1"
 	"context"
 	"database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
+	grpc2 "github.com/tuanpa28/profile-service/src/pkg/protocol/grpc"
+	rest2 "github.com/tuanpa28/profile-service/src/pkg/protocol/rest"
+	v12 "github.com/tuanpa28/profile-service/src/pkg/service/v1"
 )
 
 type Config struct {
@@ -46,10 +46,10 @@ func RunServer(config Config) error {
 		fmt.Errorf("Failed to open database -> '%v'" , err)
 	}
 
-	var v1Api = v1.NewProfileServiceServer(db)
+	var v1Api = v12.NewProfileServiceServer(db)
 
 	go func() {
-		_ = rest.RunServer(ctx, config.GRPCPort, config.HTTPPort)
+		_ = rest2.RunServer(ctx, config.GRPCPort, config.HTTPPort)
 	}()
-	return grpc.RunServer(ctx, v1Api, config.GRPCPort)
+	return grpc2.RunServer(ctx, v1Api, config.GRPCPort)
 }

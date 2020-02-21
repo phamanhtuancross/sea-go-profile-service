@@ -1,9 +1,9 @@
 package rest
 
 import (
-	v1 "../../api/v1"
 	"context"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	v12 "github.com/tuanpa28/profile-service/src/pkg/api/v1"
 	"google.golang.org/grpc"
 	"log"
 	"net/http"
@@ -20,7 +20,7 @@ func RunServer(ctx context.Context, grpcPort, httpPort string) error {
 
 	mux := runtime.NewServeMux()
 	opts := []grpc.DialOption{grpc.WithInsecure()}
-	if err := v1.RegisterProfileServiceHandlerFromEndpoint(ctx, mux, "localhost:"+grpcPort, opts); err != nil {
+	if err := v12.RegisterProfileServiceHandlerFromEndpoint(ctx, mux, "localhost:"+grpcPort, opts); err != nil {
 		log.Fatalf("failed to start HTTP gateway: %v", err)
 	}
 

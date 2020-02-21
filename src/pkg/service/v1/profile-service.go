@@ -1,12 +1,13 @@
 package v1
 
 import (
-	timeUtil "../../util/timeUtil"
 	"context"
 	"database/sql"
 	"encoding/json"
 	"fmt"
 	"github.com/gogo/protobuf/proto"
+	"github.com/tuanpa28/profile-service/src/pkg/api/v1"
+	timeUtil2 "github.com/tuanpa28/profile-service/src/pkg/util/timeUtil"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"io"
@@ -16,7 +17,6 @@ import (
 	"sync"
 	"time"
 )
-import v1Proto "../../api/v1"
 
 const  ApiVersion  = "v1"
 
@@ -24,11 +24,11 @@ const  ApiVersion  = "v1"
 type ProfileServiceServer struct {
 	database *sql.DB
 
-	savedFeatures [] * v1Proto.Feature
-	savedFashionCategories [] * v1Proto.FashionCategory
+	savedFeatures [] *v1.Feature
+	savedFashionCategories [] *v1.FashionCategory
 
 	mu sync.Mutex
-	routeNotes map[string][] * v1Proto.RouteNote
+	routeNotes map[string][] *v1.RouteNote
 }
 
 func (s *ProfileServiceServer) checkAPIVersion( apiVersion string) error {
@@ -51,15 +51,15 @@ func (s * ProfileServiceServer) connect(ctx context.Context) (*sql.Conn, error) 
 	return conn, nil
 }
 
-func (s *ProfileServiceServer) Home(context.Context, *v1Proto.HomeRequest) (*v1Proto.HomeResponse, error) {
-	return &v1Proto.HomeResponse{
+func (s *ProfileServiceServer) Home(context.Context, *v1.HomeRequest) (*v1.HomeResponse, error) {
+	return &v1.HomeResponse{
 		Message: "Well come to profile service",
 	}, nil
 }
 
 
 const INSERT_NEW_ACCOUNT = "INSERT INTO Account(`id`,`email`, `first_name`, `last_name`,`phone_number`,`user_name`,`password`,`avatar_url`,`dob`,`created_time`,`updated_time`,`more_info`) VALUES(?, ?, ?,?,?,?,?,?,?,?,?,?)"
-func (s *ProfileServiceServer) Register(ctx context.Context, req *v1Proto.RegisterRequest) (*v1Proto.RegisterResponse, error) {
+func (s *ProfileServiceServer) Register(ctx context.Context, req *v1.RegisterRequest) (*v1.RegisterResponse, error) {
 	if err := s.checkAPIVersion(req.Api); err != nil {
 		return nil, err
 	}
@@ -72,7 +72,7 @@ func (s *ProfileServiceServer) Register(ctx context.Context, req *v1Proto.Regist
 
 	defer conn.Close()
 
-	var id = timeUtil.GenerateIdString()
+	var id = timeUtil2.GenerateIdString()
 
 	_, err = conn.ExecContext(ctx, INSERT_NEW_ACCOUNT,
 		id,
@@ -94,7 +94,7 @@ func (s *ProfileServiceServer) Register(ctx context.Context, req *v1Proto.Regist
 	var accountInfo = req.AccountInfo
 	accountInfo.Id = id
 
-	return &v1Proto.RegisterResponse{
+	return &v1.RegisterResponse{
 		Api:         ApiVersion,
 		Token:       id,
 		AccountInfo: accountInfo,
@@ -137,17 +137,17 @@ func (s *ProfileServiceServer) Register(ctx context.Context, req *v1Proto.Regist
 //
 //}
 
-func (s *ProfileServiceServer) GetFeature(ctx context.Context, point *v1Proto.Point) (*v1Proto.Feature, error) {
+func (s *ProfileServiceServer) GetFeature(ctx context.Context, point *v1.Point) (*v1.Feature, error) {
 	for _, feature := range s.savedFeatures {
 		if proto.Equal(feature.Location, point) {
 			return feature, nil
 		}
 	}
 
-	return &v1Proto.Feature{Location: point}, nil
+	return &v1.Feature{Location: point}, nil
 }
 
-func (s *ProfileServiceServer) ListFeatures(rect *v1Proto.Rectangle, stream v1Proto.ProfileService_ListFeaturesServer) error {
+func (s *ProfileServiceServer) ListFeatures(rect *v1.Rectangle, stream v1.ProfileService_ListFeaturesServer) error {
 	for _, feature := range s.savedFeatures {
 		if inRange(feature.Location, rect) {
 			if err := stream.Send(feature); err != nil {
@@ -159,7 +159,7 @@ func (s *ProfileServiceServer) ListFeatures(rect *v1Proto.Rectangle, stream v1Pr
 	return nil
 }
 
-func (s *ProfileServiceServer) ListFashionCategories(empty *v1Proto.EmptyParameters, stream v1Proto.ProfileService_ListFashionCategoriesServer) error {
+func (s *ProfileServiceServer) ListFashionCategories(empty *v1.EmptyParameters, stream v1.ProfileService_ListFashionCategoriesServer) error {
 		for _, category := range  s.savedFashionCategories {
 			if err := stream.Send(category); err != nil {
 				return err
@@ -180,7 +180,7 @@ func (s *ProfileServiceServer) ListFashionCategories(empty *v1Proto.EmptyParamet
 //	return nil
 //}
 
-func inRange(point *v1Proto.Point, rect *v1Proto.Rectangle) bool {
+func inRange(point *v1.Point, rect *v1.Rectangle) bool {
 	left := math.Min(float64(rect.Lo.Longitude), float64(rect.Hi.Longitude))
 	right := math.Max(float64(rect.Lo.Longitude), float64(rect.Hi.Longitude))
 	top := math.Max(float64(rect.Lo.Latitude), float64(rect.Hi.Latitude))
@@ -195,15 +195,15 @@ func inRange(point *v1Proto.Point, rect *v1Proto.Rectangle) bool {
 	return false
 }
 
-func (s *ProfileServiceServer) RecordRoute(stream v1Proto.ProfileService_RecordRouteServer) error {
+func (s *ProfileServiceServer) RecordRoute(stream v1.ProfileService_RecordRouteServer) error {
 	var pointCount, featureCount, distance int32
-	var lastPoint *v1Proto.Point
+	var lastPoint *v1.Point
 	startTime := time.Now()
 	for {
 		point, err := stream.Recv()
 		if err == io.EOF {
 			endTime := time.Now()
-			return stream.SendAndClose(&v1Proto.RouteSummary{
+			return stream.SendAndClose(&v1.RouteSummary{
 				PointCount:   pointCount,
 				FeatureCount: featureCount,
 				Distance:     distance,
@@ -226,7 +226,7 @@ func (s *ProfileServiceServer) RecordRoute(stream v1Proto.ProfileService_RecordR
 	}
 }
 
-func calcDistance(p1 *v1Proto.Point, p2 *v1Proto.Point) int32 {
+func calcDistance(p1 *v1.Point, p2 *v1.Point) int32 {
 	const CordFactor float64 = 1e7
 	const R = float64(6371000) // earth radius in metres
 	lat1 := toRadians(float64(p1.Latitude) / CordFactor)
@@ -249,7 +249,7 @@ func toRadians(num float64) float64 {
 	return num * math.Pi / float64(180)
 }
 
-func (s *ProfileServiceServer) RouteChat(stream v1Proto.ProfileService_RouteChatServer) error {
+func (s *ProfileServiceServer) RouteChat(stream v1.ProfileService_RouteChatServer) error {
 	for {
 		in, err := stream.Recv()
 		if err == io.EOF {
@@ -265,7 +265,7 @@ func (s *ProfileServiceServer) RouteChat(stream v1Proto.ProfileService_RouteChat
 		// Note: this copy prevents blocking other clients while serving this one.
 		// We don't need to do a deep copy, because elements in the slice are
 		// insert-only and never modified.
-		rn := make([]*v1Proto.RouteNote, len(s.routeNotes[key]))
+		rn := make([]*v1.RouteNote, len(s.routeNotes[key]))
 		copy(rn, s.routeNotes[key])
 		s.mu.Unlock()
 
@@ -277,12 +277,12 @@ func (s *ProfileServiceServer) RouteChat(stream v1Proto.ProfileService_RouteChat
 	}
 }
 
-func serialize(point *v1Proto.Point) string {
+func serialize(point *v1.Point) string {
 	return fmt.Sprintf("%d %d", point.Latitude, point.Longitude)
 }
 
 
-func NewProfileServiceServer(database *sql.DB) v1Proto.ProfileServiceServer {
+func NewProfileServiceServer(database *sql.DB) v1.ProfileServiceServer {
 	var service = ProfileServiceServer{database: database}
 	service.loadLocalDataForSaveFeatures()
 	service.loadLocalDataForSavedFashionCategories()
@@ -290,7 +290,7 @@ func NewProfileServiceServer(database *sql.DB) v1Proto.ProfileServiceServer {
 }
 
 func (s * ProfileServiceServer) loadLocalDataForSaveFeatures() {
-	jsonFile, err := os.Open("./pkg/service/v1/db.json")
+	jsonFile, err := os.Open("./src/pkg/service/v1/db.json")
 
 	if err != nil {
 		fmt.Println(err)
@@ -303,7 +303,7 @@ func (s * ProfileServiceServer) loadLocalDataForSaveFeatures() {
 
 func (s * ProfileServiceServer) loadLocalDataForSavedFashionCategories() {
 
-	jsonFile, err := os.Open("./pkg/service/v1/categories.db.json")
+	jsonFile, err := os.Open("./src/pkg/service/v1/categories.db.json")
 	if err != nil {
 		fmt.Println(err)
 	}
