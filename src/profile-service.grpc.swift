@@ -37,6 +37,12 @@ fileprivate final class V1_ProfileServiceRegisterCallBase: ClientCallUnaryBase<V
   override class var method: String { return "/v1.ProfileService/Register" }
 }
 
+internal protocol V1_ProfileServiceLoginCall: ClientCallUnary {}
+
+fileprivate final class V1_ProfileServiceLoginCallBase: ClientCallUnaryBase<V1_LoginRequest, V1_LoginResponse>, V1_ProfileServiceLoginCall {
+  override class var method: String { return "/v1.ProfileService/Login" }
+}
+
 internal protocol V1_ProfileServiceGetFeatureCall: ClientCallUnary {}
 
 fileprivate final class V1_ProfileServiceGetFeatureCallBase: ClientCallUnaryBase<V1_Point, V1_Feature>, V1_ProfileServiceGetFeatureCall {
@@ -141,6 +147,11 @@ internal protocol V1_ProfileServiceService: ServiceClient {
   func register(_ request: V1_RegisterRequest, completion: @escaping (V1_RegisterResponse?, CallResult) -> Void) throws -> V1_ProfileServiceRegisterCall
 
   /// Synchronous. Unary.
+  func login(_ request: V1_LoginRequest) throws -> V1_LoginResponse
+  /// Asynchronous. Unary.
+  func login(_ request: V1_LoginRequest, completion: @escaping (V1_LoginResponse?, CallResult) -> Void) throws -> V1_ProfileServiceLoginCall
+
+  /// Synchronous. Unary.
   func getFeature(_ request: V1_Point) throws -> V1_Feature
   /// Asynchronous. Unary.
   func getFeature(_ request: V1_Point, completion: @escaping (V1_Feature?, CallResult) -> Void) throws -> V1_ProfileServiceGetFeatureCall
@@ -187,6 +198,17 @@ internal final class V1_ProfileServiceServiceClient: ServiceClientBase, V1_Profi
   /// Asynchronous. Unary.
   internal func register(_ request: V1_RegisterRequest, completion: @escaping (V1_RegisterResponse?, CallResult) -> Void) throws -> V1_ProfileServiceRegisterCall {
     return try V1_ProfileServiceRegisterCallBase(channel)
+      .start(request: request, metadata: metadata, completion: completion)
+  }
+
+  /// Synchronous. Unary.
+  internal func login(_ request: V1_LoginRequest) throws -> V1_LoginResponse {
+    return try V1_ProfileServiceLoginCallBase(channel)
+      .run(request: request, metadata: metadata)
+  }
+  /// Asynchronous. Unary.
+  internal func login(_ request: V1_LoginRequest, completion: @escaping (V1_LoginResponse?, CallResult) -> Void) throws -> V1_ProfileServiceLoginCall {
+    return try V1_ProfileServiceLoginCallBase(channel)
       .start(request: request, metadata: metadata, completion: completion)
   }
 
@@ -241,6 +263,7 @@ internal final class V1_ProfileServiceServiceClient: ServiceClientBase, V1_Profi
 internal protocol V1_ProfileServiceProvider: ServiceProvider {
   func home(request: V1_HomeRequest, session: V1_ProfileServiceHomeSession) throws -> V1_HomeResponse
   func register(request: V1_RegisterRequest, session: V1_ProfileServiceRegisterSession) throws -> V1_RegisterResponse
+  func login(request: V1_LoginRequest, session: V1_ProfileServiceLoginSession) throws -> V1_LoginResponse
   func getFeature(request: V1_Point, session: V1_ProfileServiceGetFeatureSession) throws -> V1_Feature
   func listFeatures(request: V1_Rectangle, session: V1_ProfileServiceListFeaturesSession) throws -> ServerStatus?
   func recordRoute(session: V1_ProfileServiceRecordRouteSession) throws -> V1_RouteSummary?
@@ -264,6 +287,11 @@ extension V1_ProfileServiceProvider {
       return try V1_ProfileServiceRegisterSessionBase(
         handler: handler,
         providerBlock: { try self.register(request: $0, session: $1 as! V1_ProfileServiceRegisterSessionBase) })
+          .run()
+    case "/v1.ProfileService/Login":
+      return try V1_ProfileServiceLoginSessionBase(
+        handler: handler,
+        providerBlock: { try self.login(request: $0, session: $1 as! V1_ProfileServiceLoginSessionBase) })
           .run()
     case "/v1.ProfileService/GetFeature":
       return try V1_ProfileServiceGetFeatureSessionBase(
@@ -303,6 +331,10 @@ fileprivate final class V1_ProfileServiceHomeSessionBase: ServerSessionUnaryBase
 internal protocol V1_ProfileServiceRegisterSession: ServerSessionUnary {}
 
 fileprivate final class V1_ProfileServiceRegisterSessionBase: ServerSessionUnaryBase<V1_RegisterRequest, V1_RegisterResponse>, V1_ProfileServiceRegisterSession {}
+
+internal protocol V1_ProfileServiceLoginSession: ServerSessionUnary {}
+
+fileprivate final class V1_ProfileServiceLoginSessionBase: ServerSessionUnaryBase<V1_LoginRequest, V1_LoginResponse>, V1_ProfileServiceLoginSession {}
 
 internal protocol V1_ProfileServiceGetFeatureSession: ServerSessionUnary {}
 

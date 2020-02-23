@@ -2,12 +2,15 @@ package v1
 
 import (
 	"context"
+	"crypto/rsa"
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/gogo/protobuf/proto"
 	"github.com/tuanpa28/profile-service/src/pkg/api/v1"
 	timeUtil2 "github.com/tuanpa28/profile-service/src/pkg/util/timeUtil"
+	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"io"
@@ -23,6 +26,7 @@ const  ApiVersion  = "v1"
 
 type ProfileServiceServer struct {
 	database *sql.DB
+	jwtPrivatekey *rsa.PrivateKey
 
 	savedFeatures [] *v1.Feature
 	savedFashionCategories [] *v1.FashionCategory
@@ -286,6 +290,13 @@ func NewProfileServiceServer(database *sql.DB) v1.ProfileServiceServer {
 	var service = ProfileServiceServer{database: database}
 	service.loadLocalDataForSaveFeatures()
 	service.loadLocalDataForSavedFashionCategories()
+
+	key, _ := ioutil.ReadFile("./src/configs/jwt/private.pem")
+	parsedKey, err := jwt.ParseRSAPrivateKeyFromPEM(key)
+	if err != nil {
+		print(err)
+	}
+	service.jwtPrivatekey = parsedKey
 	return &service
 }
 
@@ -311,6 +322,66 @@ func (s * ProfileServiceServer) loadLocalDataForSavedFashionCategories() {
 	byteValue, _ := ioutil.ReadAll(jsonFile)
 	json.Unmarshal(byteValue, &s.savedFashionCategories)
 	defer jsonFile.Close()
+}
+
+
+func (s *ProfileServiceServer) Login(ctx context.Context,request *v1.LoginRequest) (*v1.LoginResponse, error) {
+	user, err := getUser(s.database, request.Username)
+	if err != nil {
+		return nil, err
+	}
+
+	if user.Password != request.Password {
+		return  nil,  grpc.Errorf(codes.PermissionDenied, "")
+	}
+
+	token := jwt.New(jwt.SigningMethodRS256)
+
+	token.Claims = jwt.MapClaims{
+		"exp": time.Now().Add(time.Hour * 72).Unix(),
+		"iss": "profile.service",
+		"iat": "time.Now().Unix()",
+		"email": user.Email,
+		"sub": user.Password,
+	}
+
+	tokenString, err := token.SignedString(s.jwtPrivatekey)
+	if err != nil {
+		return nil, grpc.Errorf(codes.Internal, err.Error())
+	}
+
+	return &v1.LoginResponse{
+		Token:                tokenString,
+		UserInfo:             user,
+	}, nil
+
+}
+
+func getUser(db *sql.DB, username string) (*v1.Account,error) {
+	var	user = &v1.Account{}
+
+	rows, err := db.Query("SELECT id, email,user_name, password, phone_number, avatar_url, last_name, first_name  FROM Account WHERE user_name=?", username)
+	if err != nil {
+		return nil, err
+	}
+
+	defer  rows.Close()
+
+	for rows.Next() {
+		if err := rows.Scan(
+			&user.Id,
+			&user.Email,
+			&user.UserName,
+			&user.Password,
+			&user.PhoneNumber,
+			&user.AvatarUrl,
+			&user.LastName,
+			&user.FirstName); err != nil {
+			return nil, err
+		}
+	}
+
+	return user,nil
 }
 
 

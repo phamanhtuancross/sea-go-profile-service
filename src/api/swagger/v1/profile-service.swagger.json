@@ -205,6 +205,17 @@
         }
       }
     },
+    "v1LoginResponse": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        },
+        "user_info": {
+          "$ref": "#/definitions/v1Account"
+        }
+      }
+    },
     "v1Point": {
       "type": "object",
       "properties": {
